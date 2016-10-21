@@ -1,0 +1,9 @@
+#landingPic {
+  width: 100%;
+  object-fit: contain;
+}
+
+.btn {
+  color: white;
+  background-color: black;
+}
