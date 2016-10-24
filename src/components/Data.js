@@ -14,6 +14,9 @@ export default class Data extends Component {
     };
     this._onChange = this._onChange.bind(this);
     this._submitMessage = this._submitMessage.bind(this);
+    this._editPost1 = this._editPost1.bind(this);
+    this._editPost2 = this._editPost2.bind(this);
+    this._deletePost = this._deletePost.bind(this);
   }
 
   componentWillMount () {
@@ -34,15 +37,55 @@ export default class Data extends Component {
 
   _submitMessage () {
     let { selectedBoard } = this.state
-    let { messageBody } = this.refs
+    let { messageBody, messageTitle, messageAuthor } = this.refs
     let message = {
       message: messageBody.value,
       displayTime: moment().format('MMMM Do YYYY, h:mm:ss a'),
+      title: messageTitle.value,
+      author: messageAuthor.value,
+      edit: false,
       time: Date.now()
     }
-    selectedBoard.messages.push(message)
+    selectedBoard.messages.unshift(message)
     console.log('messageBody.value: ', messageBody.value)
     console.log('selectedBoard: ', selectedBoard)
+    ToAPIActions.addMessage(selectedBoard)
+  }
+
+  _editPost1 (message) {
+    let { selectedBoard } = this.state
+    message.edit = true
+    selectedBoard.messages.map((post) => {
+      if (post.time === message.time){
+        post.edit = true
+      }
+    })
+    ToAPIActions.addMessage(selectedBoard)
+  }
+
+  _editPost2 (message) {
+    let { selectedBoard } = this.state
+    let { editMessageBody, editMessageTitle } = this.refs
+    selectedBoard.messages.map((post) => {
+      if (post.time === message.time){
+        post.edit = false
+        post.message = editMessageBody.value
+        post.title = editMessageTitle.value
+      }
+    })
+    ToAPIActions.addMessage(selectedBoard)
+  }
+
+  _deletePost (message) {
+    let { selectedBoard } = this.state
+    console.log('in _deletePost');
+    console.log('message: ', message)
+    selectedBoard.messages.forEach((post, index) => {
+      if (post.time === message.time){
+        selectedBoard.messages.splice(index,1)
+      }
+    })
+    console.log('selectedBoard.messages: ', selectedBoard.messages)
     ToAPIActions.addMessage(selectedBoard)
   }
 
@@ -59,56 +102,99 @@ export default class Data extends Component {
     } else {
       boardChoice =
           <div className='container'>
-            <div className="col-sm-4">
-              <h1>{selectedBoard.name}</h1>
-              <img src={selectedBoard.image} alt="" className="boardImage"/>
-            </div>
-            <div className="col-sm-8"></div>
-            <div className="col-sm-4">
-            </div>
+            <h1>{selectedBoard.name}</h1>
+            <img src={selectedBoard.image} alt="" id="blogImage"/>
+            {/* <div className="col-sm-8"></div>
+            <div className="col-sm-4"></div> */}
           </div>
 
       messageInput =
-          <div className="container">
+          <div className="container col-sm-12">
             <form>
               <div className="form-group">
-                <label htmlFor="messageToBeInput">Add Message</label>
-                <textarea ref='messageBody' id="messageToBeInput" defaultValue="That was worse than 100 September 11s" className="form-control" rows="3"></textarea>
+                <label htmlFor="messageToBeInput">Add Blog Post</label>
+                <br/>
+                <input type="text" ref="messageAuthor" className="form-control" defaultValue="Richard Mands" aria-describedby="sizing-addon1"/>
+                <input type="text" ref="messageTitle" className="form-control" defaultValue="Bojack's Line" aria-describedby="sizing-addon1"/>
+                <textarea ref='messageBody' id="messageToBeInput" defaultValue="That was worse than 100 September 11s" className="form-control" rows="15"></textarea>
               </div>
             </form>
-            <button onClick={this._submitMessage} className="btn">Add Message</button>
+            <button onClick={this._submitMessage} className="btn">Add Post</button>
+            <br/>
+            <br/>
+            <br/>
           </div>
 
           if (selectedBoard.messages.length > 0){
-            let forwardMessages = selectedBoard.messages
-            let reverseMessages = forwardMessages.sort((a,b) => {
-              return a.time - b.time
-            })
-            console.log('forwardMessages: ', forwardMessages)
-            console.log('reverseMessages: ', reverseMessages)
+
+            let theBlogs = selectedBoard.messages
+
             messages =
             <div className="container">
+              <hr/>
+              <br/>
+              {theBlogs.map((message) => {
+
+                if (message.edit === false) {
+
+                  return(
+                    <div key={message.time}>
+                      <br/>
+                      <h2>{message.title}</h2>
+                      <h4>{message.displayTime}</h4>
+                      <h3>{message.message}</h3>
+                      <button onClick={() => this._editPost1(message)} className="btn">Edit</button>
+                      <span>  </span>
+                      <button onClick={() => this._deletePost(message)} className="btn">Delete</button>
+                    </div>
+                  )
+
+                } else if (message.edit === true) {
+
+                  return(
+                    <div key={message.time}>
+                      <br/>
+                      <input ref='editMessageTitle' defaultValue={message.title}/>
+                      <h4>{message.displayTime}</h4>
+                      <textarea ref='editMessageBody' id="messageToBeInput" defaultValue={message.message} className="form-control" rows="15"></textarea>
+                      <button onClick={() => this._editPost2(message)} className="btn">confirm</button>
+                      <span>  </span>
+                    </div>
+                  )
+                }
+
+                })}
+              <hr/>
+            </div>
+
+            {/* <div className="container">
               <table className="table">
                 <thead>
                   <tr>
-                    <th>Time</th>
-                    <th>Message</th>
+                    <th>Blog Posts</th>
                   </tr>
                 </thead>
                 <tbody>
 
-                  {reverseMessages.map((message) => {
+                  {theBlogs.map((message) => {
                     return(
-                      <tr key={message.time}>
-                        <td>{message.displayTime}</td>
-                        <td>{message.message}</td>
-                      </tr>
+                      <div key={message.time}>
+                        <tr >
+                          <td>{message.displayTime}</td>
+                        </tr>
+                        <tr>
+                          <td>{message.message}</td>
+                        </tr>
+                        <tr>
+                          <td> <br/> </td>
+                        </tr>
+                      </div>
                     )
                   })}
 
                 </tbody>
               </table>
-            </div>
+            </div> */}
           }
       }
 
@@ -119,6 +205,7 @@ export default class Data extends Component {
           <br/>
           {messageInput}
           <br/>
+          <hr/>
           {messages}
           <br/>
         </div>

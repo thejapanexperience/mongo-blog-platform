@@ -3,7 +3,7 @@ require('dotenv').config();
 
 // SET SERVER PORT
 const PORT = process.env.PORT || 8000;
-const MONGODB_URI = process.env.MONGODB_URI || `mongodb://localhost/messageboardsdb11`
+const MONGODB_URI = process.env.MONGODB_URI || `mongodb://localhost/blogsdb004`
 
 // REQUIRES
 const bodyParser = require('body-parser');

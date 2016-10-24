@@ -76,7 +76,7 @@ export default class AddData extends Component {
       console.log('no boards');
       boardDropdown =
         <select className="form-control">
-          <option disabled selected value> Choose a board</option>
+          <option disabled selected value> Choose a blog</option>
         </select>
     } else {
       console.log('about to map dropdown')
@@ -89,7 +89,7 @@ export default class AddData extends Component {
       console.log('boardList: ', boardList)
       boardDropdown =
         <select ref="boardChoice" className="form-control">
-          <option disabled selected value> Choose a board</option>
+          <option disabled selected value> Choose a blog</option>
           {boardList}
         </select>
       }

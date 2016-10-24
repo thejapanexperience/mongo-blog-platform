@@ -1,9 +1,21 @@
-#boardImage {
+img {
   width: 100%;
-  object-fit: contain;
 }
+
+/*#boardImage {
+  width: auto;
+  object-fit: contain;
+}*/
 
 .btn {
   color: white;
   background-color: black;
 }
+
+hr{
+  color: rgb(54, 42, 71)
+}
+
+/*body {
+  background-color: rgba(210, 175, 24, 0.72);
+}*/
