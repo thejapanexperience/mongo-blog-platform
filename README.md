@@ -1,4 +1,4 @@
-#friendalizer
+#Richard's Blog Platform
 
-Allows a user to analyze thier friends and determine if they should continue the relationship.  
-Built using Express, React, MySQL, IBM Watson, and Microsoft Cognitive Services.
+Allows a user to create blogs and add posts to it.
+Built using Express, React, Mongo, Mongoose, Flux, etc.
