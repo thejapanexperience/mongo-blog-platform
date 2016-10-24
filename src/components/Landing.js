@@ -11,9 +11,9 @@ export default class Landing extends Component {
 
     return (
         <div id='landing' className="container jumbotron">
-          <h1>Richard's Chat App</h1>
-          <p>RMsMessenger</p>
-          <Link to='/adddata'><p><button className="btn btn-lg" href="#" role="button">Choose Board</button></p></Link>
+          <h1>Richard's Blogging Platform</h1>
+          <p>BloggyMcBlogFace</p>
+          <Link to='/adddata'><p><button className="btn btn-lg" href="#" role="button">Choose Blog</button></p></Link>
         </div>
     );
   }

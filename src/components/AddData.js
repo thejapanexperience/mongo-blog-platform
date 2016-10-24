@@ -97,23 +97,23 @@ export default class AddData extends Component {
 
     return (
       <div className="container">
-        <h1>Choose a board or make a new one</h1>
+        <h1>Choose a blog or make a new one</h1>
         <br/>
         {boardDropdown}
         <br/>
         <Link to='/viewdata'>
-          <button onClick={this._chooseBoard} className="btn">Go To Board</button>
+          <button onClick={this._chooseBoard} className="btn">Go To Blog</button>
         </Link>
         <br/>
         <br/>
         <div className="input-group input-group-lg">
           <span className="input-group-addon addDataSpan" id="sizing-addon1">Name|Description|Image</span>
-          <input ref='boardName'type="text" className="form-control" defaultValue="MrPeanutbutter" aria-describedby="sizing-addon1"/>
-          <input ref='boardDescription'type="text" className="form-control" defaultValue="A cool place to chat about Bojack and pals" aria-describedby="sizing-addon1"/>
+          <input ref='boardName'type="text" className="form-control" defaultValue="MrPeanutbutter's Blog" aria-describedby="sizing-addon1"/>
+          <input ref='boardDescription'type="text" className="form-control" defaultValue="A cool place to blog about Bojack and pals" aria-describedby="sizing-addon1"/>
           <input ref='boardImage'type="text" className="form-control" defaultValue="http://cdn0.dailydot.com/cache/0f/99/0f99c5beb826a1cb3c155d700b7b628b.jpg" aria-describedby="sizing-addon1"/>
         </div>
         <br/>
-        <button onClick={this._submitBoard} className="btn">Add New Board</button>
+        <button onClick={this._submitBoard} className="btn">Add New Blog</button>
       </div>
     );
   }

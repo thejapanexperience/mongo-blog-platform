@@ -10,8 +10,8 @@ export default class Navbar extends Component {
         <div className="container-fluid">
           <div className="row">
             <Link to='/'><div className="col-sm-4"><button className="btn btn-lg btn-block" href="#">Home</button></div></Link>
-            <Link to='/adddata'><div className="col-sm-4"><button className="btn btn-lg btn-block" href="#">Choose Board</button></div></Link>
-            <Link to='/viewdata'><div className="col-sm-4"><button className="btn btn-lg btn-block" href="#">Chat</button></div></Link>
+            <Link to='/adddata'><div className="col-sm-4"><button className="btn btn-lg btn-block" href="#">Choose Blog</button></div></Link>
+            <Link to='/viewdata'><div className="col-sm-4"><button className="btn btn-lg btn-block" href="#">Blog</button></div></Link>
           </div>
           </div>
         )
