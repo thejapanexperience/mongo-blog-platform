@@ -141,6 +141,7 @@ export default class Data extends Component {
                     <div key={message.time}>
                       <br/>
                       <h2>{message.title}</h2>
+                      <h3>{message.author}</h3>
                       <h4>{message.displayTime}</h4>
                       <h3>{message.message}</h3>
                       <button onClick={() => this._editPost1(message)} className="btn">Edit</button>
@@ -155,7 +156,6 @@ export default class Data extends Component {
                     <div key={message.time}>
                       <br/>
                       <input ref='editMessageTitle' defaultValue={message.title}/>
-                      <h4>{message.displayTime}</h4>
                       <textarea ref='editMessageBody' id="messageToBeInput" defaultValue={message.message} className="form-control" rows="15"></textarea>
                       <button onClick={() => this._editPost2(message)} className="btn">confirm</button>
                       <span>  </span>
