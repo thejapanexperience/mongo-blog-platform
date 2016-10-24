@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const marked = require('marked')
 
 const Board = require('../models/Board')
 
@@ -22,6 +23,10 @@ router.route('/')
  .put((req, res) => {
    console.log('req.body.board.id: ', req.body.board._id)
    console.log('req.body.board: ', req.body.board)
+   req.body.board.messages.forEach((post) => {
+     post.message = marked(post.message)
+     console.log('post.message: ', post.message)
+   })
    Board.findByIdAndUpdate(req.body.board._id, {$set: req.body.board})
      .then(() => {
        res.send()

@@ -143,7 +143,8 @@ export default class Data extends Component {
                       <h2>{message.title}</h2>
                       <h3>{message.author}</h3>
                       <h4>{message.displayTime}</h4>
-                      <h3>{message.message}</h3>
+                      <h3 dangerouslySetInnerHTML={{__html: message.message}}></h3>
+                      {/* <h3>{message.message}</h3> */}
                       <button onClick={() => this._editPost1(message)} className="btn">Edit</button>
                       <span>  </span>
                       <button onClick={() => this._deletePost(message)} className="btn">Delete</button>
