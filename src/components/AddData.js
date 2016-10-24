@@ -3,6 +3,7 @@ import uuid from 'uuid';
 import {Link} from 'react-router';
 
 import ToAPIActions from '../actions/ToAPIActions';
+import BoardActions from '../actions/BoardActions';
 import Store from '../stores/Store';
 
 export default class AddData extends Component {
@@ -15,6 +16,7 @@ export default class AddData extends Component {
 
     this._onChange = this._onChange.bind(this);
     this._submitBoard = this._submitBoard.bind(this);
+    this._chooseBoard = this._chooseBoard.bind(this);
   }
 
   componentWillMount(){
@@ -45,24 +47,43 @@ export default class AddData extends Component {
     ToAPIActions.submitBoard(board)
   }
 
+  _chooseBoard () {
+    let { boards } = this.state
+    console.log('boards: ', boards)
+    let { boardChoice } = this.refs
+    let boardName = boardChoice.value
+    let selectedBoard
+    console.log('boardChoice: ', boardChoice.value)
+    selectedBoard = boards.filter((board) => {
+      return board.name === boardName
+    })
+    let finalBoard = {
+      name: selectedBoard[0].name,
+      image: selectedBoard[0].image,
+      description: selectedBoard[0].description
+    }
+    console.log('finalBoard: ', finalBoard)
+    ToAPIActions.chooseBoard(finalBoard)
+  }
+
 
   render () {
 
-    console.log('in AddData render');
-    const { boards } = this.state;
+    let { boards } = this.state;
     let boardDropdown
     let boardList
     if (!boards) {
-      console.log('no clients');
+      console.log('no boards');
       boardDropdown =
         <select className="form-control">
           <option disabled selected value> Choose a board</option>
         </select>
     } else {
-      boardList = clients.map(client => {
-        console.log('client: ', client)
+      console.log('about to map dropdown')
+      console.log('boards: ', boards)
+      boardList = boards.map(board => {
         return (
-          <option key={client.clientId}>{client.name}</option>
+          <option key={board._id}>{board.name}</option>
         )
       })
       console.log('boardList: ', boardList)
@@ -80,7 +101,9 @@ export default class AddData extends Component {
         <br/>
         {boardDropdown}
         <br/>
-        <Link to='/viewdata'><button onClick={this._submitAnimal} className="btn">Choose Board</button></Link>
+        <Link to='/viewdata'>
+          <button onClick={this._chooseBoard} className="btn">Go To Board</button>
+        </Link>
         <br/>
         <br/>
         <div className="input-group input-group-lg">

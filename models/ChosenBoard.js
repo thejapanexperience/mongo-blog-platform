@@ -4,14 +4,14 @@ const mongoose = require('mongoose')
 const boardSchema = new mongoose.Schema({
   name: { type: String },
   description: { type: String },
-  createdAt: { type: Date, default:Date.now },
+  createdAt: { type: Date },
   image: { type: String },
   messages: {type: []}
 })
 
-const Board = mongoose.model('Board', boardSchema)
+const ChosenBoard = mongoose.model('ChosenBoard', boardSchema)
 
-module.exports = Board;
+module.exports = ChosenBoard;
 
 // comes prebuilt with all the cool methods
 

@@ -1,38 +1,35 @@
-const express = require('express');
-const path = require('path');
-const morgan = require('morgan');
+// LOAD ENV VARIABLES
+require('dotenv').config();
+
+// SET SERVER PORT
+const PORT = process.env.PORT || 8000;
+const MONGODB_URI = process.env.MONGODB_URI || `mongodb://localhost/messageboardsdb11`
+
+// REQUIRES
 const bodyParser = require('body-parser');
-const cors = require('cors');
-let socketEmitter;
+const express = require('express');
+const morgan = require('morgan');
+const path = require('path');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('./webpack.config');
 
-require('dotenv').config({ silent: true });
+// Mongoose
+const mongoose = require('mongoose')
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI, err => {
+  console.log(err || `Mongo connected to ${MONGODB_URI}`);
+})
 
+// APP DECLARATION
 const app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-io.on('connection', (socket) => {
-  console.log('SOCKET ON');
-  socketEmitter = (type, data) => socket.emit(type, data);
-});
-const PORT = process.env.PORT || 8000;
-server.listen(PORT);
-
-// 3RD PARTY MIDDLEWARE
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
 
 // GENERAL MIDDLEWARE
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('build'));
-app.use((req, res, next) => {
- res.socketEmitter = socketEmitter;
- next();
-});
 
 // WEBPACK CONFIG
 const compiler = webpack(webpackConfig);
@@ -44,14 +41,13 @@ app.use(webpackDevMiddleware(compiler, {
   path: webpackConfig.output.path
 }));
 
-// ERROR CHECKING
-app.use((req, res, next) => {
-  res.hasError = (err, data) => res.status(err ? 400 : 200).send(err || data);
-  next();
-});
-
 // ROUTES
 app.use('/api', require('./routes/api'));
+
+app.get('/', (req, res) => {
+  let filepath = path.resolve('index.html');
+  res.sendFile(filepath);
+});
 
 // ALLOW REACT ROUTING
 app.use('*', (req, res) => {
@@ -59,6 +55,6 @@ app.use('*', (req, res) => {
 });
 
 // SERVER LISTEN
-// app.listen(PORT, (err) => {
-//   console.log(err || `Express listening on port ${PORT}`);
-// });
+app.listen(PORT, err => {
+  console.log(err || `Express listening on port ${PORT}`);
+});

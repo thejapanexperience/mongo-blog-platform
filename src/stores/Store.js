@@ -3,6 +3,7 @@ import moment from 'moment';
 import AppDispatcher from '../AppDispatcher';
 
 let _boards
+let _selectedBoard
 
 class Store extends EventEmitter {
   constructor () {
@@ -13,7 +14,19 @@ class Store extends EventEmitter {
 
         case 'GOT_BOARDS':
           _boards = action.payload.data
-          console.log('_boards: ', _boards)
+          this.emit('CHANGE');
+          break;
+
+        case 'SELECTED_BOARD':
+          _selectedBoard = action.payload.data
+          this.emit('CHANGE');
+          break;
+
+        case 'GOT_SELECTED':
+          // let temp = action.payload.data
+          // let i = temp.length
+          // console.log('temp, i: ', temp, i)
+          _selectedBoard = action.payload.data
           this.emit('CHANGE');
           break;
 
@@ -34,6 +47,10 @@ class Store extends EventEmitter {
 
   getBoards () {
     return _boards;
+  }
+
+  getSelectedBoard () {
+    return _selectedBoard;
   }
 
 }
